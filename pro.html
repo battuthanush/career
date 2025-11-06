@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Career Assessment Tool</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #000;
+      color: #ffeb3b;
+      margin: 0;
+      overflow-x: hidden;
+    }
+
+    /* ===== Header ===== */
+    header {
+      background: #111;
+      color: #ffeb3b;
+      padding: 25px;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.6);
+      letter-spacing: 1px;
+      animation: slideDown 1s ease;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-50px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== Navigation Bar ===== */
+    nav {
+      background: #1e1e1e;
+      padding: 10px;
+      display: flex;
+      justify-content: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.6);
+      animation: fadeIn 1.5s ease;
+    }
+
+    nav button {
+      margin: 5px;
+      padding: 10px 18px;
+      background: #4dd0e1;
+      color: #000;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+      box-shadow: 0 0 10px rgba(77, 208, 225, 0.3);
+    }
+
+    nav button:hover {
+      background: #80deea;
+      transform: scale(1.08);
+      box-shadow: 0 0 20px rgba(77, 208, 225, 0.8);
+    }
+
+    /* ===== Sections ===== */
+    section {
+      padding: 20px;
+      display: none;
+      animation: fadeInUp 1s ease;
+    }
+
+    .active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== Cards ===== */
+    .card {
+      background: #111;
+      padding: 25px;
+      margin: 15px 0;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(255, 255, 0, 0.2);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      animation: floatCard 1.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 8px 25px rgba(255, 255, 0, 0.5);
+    }
+
+    @keyframes floatCard {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== Inputs ===== */
+    input, select {
+      padding: 10px;
+      margin: 5px 0;
+      width: 100%;
+      border-radius: 6px;
+      border: 1px solid #555;
+      background: #222;
+      color: #ffeb3b;
+      outline: none;
+      transition: 0.3s;
+    }
+
+    input:focus, select:focus {
+      border-color: #4dd0e1;
+      box-shadow: 0 0 12px #4dd0e1;
+    }
+
+    /* ===== Buttons ===== */
+    .btn {
+      padding: 10px 16px;
+      margin-top: 10px;
+      background: #4dd0e1;
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 10px rgba(77, 208, 225, 0.3);
+      animation: glowPulse 2s infinite alternate;
+    }
+
+    .btn:hover {
+      background: #80deea;
+      transform: scale(1.08);
+      box-shadow: 0 0 25px rgba(77, 208, 225, 0.8);
+    }
+
+    @keyframes glowPulse {
+      from { box-shadow: 0 0 10px rgba(77, 208, 225, 0.2); }
+      to { box-shadow: 0 0 20px rgba(77, 208, 225, 0.8); }
+    }
+
+    /* ===== List & Footer ===== */
+    ul {
+      list-style-type: square;
+      margin-left: 25px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      background: #111;
+      color: #ffeb3b;
+      margin-top: 40px;
+      font-size: 14px;
+      border-top: 1px solid #333;
+      animation: fadeIn 2s ease;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Career Assessment Tool</h1>
+  <p>Helping students discover their perfect career paths</p>
+</header>
+
+<nav>
+  <button onclick="showSection('student')">Student</button>
+  <button onclick="showSection('admin')">Admin</button>
+</nav>
+
+<!-- Student Section -->
+<section id="student" class="active">
+  <div class="card">
+    <h2>🎓 Take an Assessment</h2>
+    <label>Select Test Type:</label>
+    <select id="testType">
+      <option value="career">Career Test</option>
+      <option value="personality">Personality Test</option>
+      <option value="skills">Skills Evaluation</option>
+    </select>
+    <button class="btn" onclick="startTest()">Start Test</button>
+  </div>
+
+  <div id="questions" class="card"></div>
+  <div id="results" class="card"></div>
+</section>
+
+<!-- Admin Section -->
+<section id="admin">
+  <div class="card">
+    <h2>⚙️ Manage Assessments</h2>
+    <label>Test Type:</label>
+    <select id="adminTestType">
+      <option value="career">Career Test</option>
+      <option value="personality">Personality Test</option>
+      <option value="skills">Skills Evaluation</option>
+    </select>
+
+    <label>Question:</label>
+    <input type="text" id="newQuestion" placeholder="Enter a new question">
+    <button class="btn" onclick="addQuestion()">Add Question</button>
+  </div>
+
+  <div id="adminQuestions" class="card"></div>
+</section>
+
+<footer>
+  © 2025 Career Assessment Tool | Designed by Battu Thanush
+</footer>
+
+<script>
+  let tests = {
+    career: ["Do you enjoy problem-solving? (yes/no)", "Do you like working with data? (yes/no)"],
+    personality: ["Do you prefer working alone or in teams? (alone/team)", "Are you more logical or creative? (logical/creative)"],
+    skills: ["Rate your coding skills (1-5)", "Rate your communication skills (1-5)"]
+  };
+
+  function showSection(id) {
+    document.querySelectorAll("section").forEach(sec => sec.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+    if (id === "admin") displayAdminQuestions();
+  }
+
+  function startTest() {
+    let type = document.getElementById("testType").value;
+    let container = document.getElementById("questions");
+    container.innerHTML = `<h3>${type.toUpperCase()} TEST</h3>`;
+    tests[type].forEach((q, i) => {
+      container.innerHTML += `<div class="question" style="animation: fadeInUp 0.7s ease;">${q}<br><input type="text" id="q${i}"></div>`;
+    });
+    container.innerHTML += `<button class="btn" onclick="submitTest('${type}')">Submit</button>`;
+  }
+
+  function submitTest(type) {
+    let answers = [];
+    for (let i = 0; i < tests[type].length; i++) {
+      answers.push(document.getElementById("q" + i).value.toLowerCase());
+    }
+    let result = generateRecommendation(type, answers);
+    document.getElementById("results").innerHTML =
+      `<h3 style="animation: fadeInUp 1s ease;">🧭 Results</h3><p><b>Recommended Careers:</b></p><ul>${result.map(r => "<li>" + r + "</li>").join("")}</ul>`;
+  }
+
+  function generateRecommendation(type, answers) {
+    let recs = [];
+    if (type === "career") {
+      if (answers.includes("yes") && answers.includes("data")) recs.push("Data Scientist", "Statistician");
+      else if (answers.includes("yes")) recs.push("Software Engineer", "Problem-Solving Consultant");
+    } else if (type === "personality") {
+      if (answers[0] === "alone" && answers[1] === "logical") recs.push("Researcher", "Software Developer");
+      if (answers[0] === "team" && answers[1] === "creative") recs.push("Marketing Specialist", "Event Manager");
+    } else if (type === "skills") {
+      let coding = parseInt(answers[0]) || 0;
+      let comm = parseInt(answers[1]) || 0;
+      if (coding >= 4) recs.push("Software Engineer", "App Developer");
+      if (comm >= 4) recs.push("HR Manager", "Sales Executive");
+      if (coding <= 2 && comm <= 2) recs.push("Training Required – Explore skill development courses");
+    }
+    if (recs.length === 0) recs.push("No clear recommendation, please try again.");
+    return recs;
+  }
+
+  function addQuestion() {
+    let type = document.getElementById("adminTestType").value;
+    let q = document.getElementById("newQuestion").value;
+    if (q) {
+      tests[type].push(q);
+      document.getElementById("newQuestion").value = "";
+      displayAdminQuestions();
+    }
+  }
+
+  function removeQuestion(type, index) {
+    tests[type].splice(index, 1);
+    displayAdminQuestions();
+  }
+
+  function displayAdminQuestions() {
+    let type = document.getElementById("adminTestType").value;
+    let container = document.getElementById("adminQuestions");
+    container.innerHTML = `<h3>${type.toUpperCase()} QUESTIONS</h3>`;
+    tests[type].forEach((q, i) => {
+      container.innerHTML += `<div style="animation: fadeInUp 0.8s ease;">${q} <button class="btn" style="background:#e57373;color:#000;" onclick="removeQuestion('${type}', ${i})">❌ Remove</button></div>`;
+    });
+  }
+</script>
+
+</body>
+</html>
